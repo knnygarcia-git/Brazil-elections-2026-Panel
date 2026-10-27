@@ -1,0 +1,92 @@
+[
+ {
+  "id": "01",
+  "pollster": "AtlasIntel/Bloomberg",
+  "released": "2026-10-09",
+  "fieldwork": "Oct 3–8",
+  "sample": 5026,
+  "lula_pct": 47.2,
+  "flavio_pct": 52.8,
+  "source_type": "published"
+ },
+ {
+  "id": "02",
+  "pollster": "Datafolha",
+  "released": "2026-10-08",
+  "fieldwork": "Oct 6–7",
+  "sample": null,
+  "lula_pct": 48.0,
+  "flavio_pct": 52.0,
+  "source_type": "published"
+ },
+ {
+  "id": "03",
+  "pollster": "Genial/Quaest",
+  "released": "2026-10-14",
+  "fieldwork": "—",
+  "sample": null,
+  "lula_pct": 49.0,
+  "flavio_pct": 51.0,
+  "source_type": "published"
+ },
+ {
+  "id": "04",
+  "pollster": "Datafolha",
+  "released": "2026-10-15",
+  "fieldwork": "—",
+  "sample": null,
+  "lula_pct": 49.0,
+  "flavio_pct": 51.0,
+  "source_type": "derived"
+ },
+ {
+  "id": "05",
+  "pollster": "AtlasIntel/Bloomberg",
+  "released": "2026-10-19",
+  "fieldwork": "through Oct 18",
+  "sample": null,
+  "lula_pct": 48.9,
+  "flavio_pct": 51.1,
+  "source_type": "published"
+ },
+ {
+  "id": "06",
+  "pollster": "Datafolha",
+  "released": "2026-10-22",
+  "fieldwork": "Oct 20–22",
+  "sample": 2520,
+  "lula_pct": 50.0,
+  "flavio_pct": 50.0,
+  "source_type": "published"
+ },
+ {
+  "id": "07",
+  "pollster": "AtlasIntel/Bloomberg",
+  "released": "2026-10-24",
+  "fieldwork": "Oct 18–23",
+  "sample": 4990,
+  "lula_pct": 49.2,
+  "flavio_pct": 50.8,
+  "source_type": "published"
+ },
+ {
+  "id": "08",
+  "pollster": "Datafolha",
+  "released": "2026-10-24",
+  "fieldwork": "Oct 23–24",
+  "sample": 4050,
+  "lula_pct": 49.0,
+  "flavio_pct": 51.0,
+  "source_type": "published"
+ },
+ {
+  "id": "09",
+  "pollster": "Genial/Quaest",
+  "released": "2026-10-24",
+  "fieldwork": "Oct 23–24",
+  "sample": null,
+  "lula_pct": 49.0,
+  "flavio_pct": 51.0,
+  "source_type": "published"
+ }
+]

@@ -1,0 +1,951 @@
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* Layout: full-page white board, cards in a grid with thin borders; color only for the two candidates. */
+#dash-root { --dash-gutter: 0; }
+.el2t { --lula: #d81e2c; --flavio: #1f5fc4; --t-bg: #ffffff; --t-panel: #ffffff; --t-soft: #f5f6f8; --t-fg: #17181c; --t-muted: #646873; --t-line: #e5e7ec;
+  --t-grid: #eceef2; --t-axis: #c9ccd3; --t-ref: #9aa0aa; --t-bad: #c62828; --t-warn: #9a6700; --t-shadow: 0 6px 24px rgba(20, 24, 40, .12);
+  --t-font: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light; background: var(--t-bg); color: var(--t-fg); display: flex; flex-direction: column; gap: var(--cds-gap-lg); font-family: var(--t-font);
+  padding-block: 28px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.el2t > * { width: 100%; max-width: 1200px; margin-inline: auto; box-sizing: border-box; }
+.el2t button, .el2t input, .el2t table, .el2t svg text { font-family: var(--t-font); }
+.el2t .titlerow { display: flex; align-items: center; gap: 12px; }
+.el2t .titlerow img { width: 40px; height: 28px; border-radius: 4px; box-shadow: 0 0 0 1px var(--t-line); object-fit: cover; }
+.el2t .foto { width: 72px; height: 72px; border-radius: 50%; flex: none; overflow: hidden; display: grid; place-items: center; background: var(--c); color: #fff; font-weight: 600; font-size: 22px; box-shadow: 0 0 0 3px var(--t-bg), 0 0 0 5px var(--c); }
+.el2t .foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.el2t .candtop { display: flex; align-items: center; gap: var(--cds-gap-md); }
+.el2t .flag { width: 22px; height: 15px; border-radius: 2px; object-fit: cover; vertical-align: -2px; margin-right: 8px; box-shadow: 0 0 0 1px var(--t-line); }
+.el2t .hd { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+.el2t .eyebrow { font-size: var(--cds-font-size-caption); color: var(--t-muted); letter-spacing: .04em; text-transform: uppercase; }
+.el2t h1 { margin: 0; font-family: var(--t-font); font-weight: 600; letter-spacing: -.01em; font-size: var(--cds-font-size-title); text-wrap: balance; }
+.el2t .lede { margin: 0; color: var(--t-muted); max-width: 70ch; }
+.el2t .lede b { font-weight: 600; color: var(--t-fg); }
+.el2t .tabs { display: flex; gap: var(--cds-gap-xs); flex-wrap: wrap; }
+.el2t .tab { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-md); border-radius: 999px; border: 1px solid var(--t-line); background: transparent; color: var(--t-muted); }
+.el2t .tab[aria-current="true"] { background: var(--t-fg); color: var(--t-bg); border-color: var(--t-fg); }
+.el2t .tab:disabled { opacity: .6; cursor: not-allowed; }
+.el2t .card { background: var(--t-panel); border: 1px solid var(--t-line); border-radius: 14px; padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+.el2t .card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: 600; }
+.el2t .note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--t-muted); }
+.el2t .cands { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--cds-gap-md); }
+.el2t .cand { border-top: 4px solid var(--c); background: linear-gradient(180deg, color-mix(in srgb, var(--c) 6%, var(--t-bg)), var(--t-bg) 60%); }
+.el2t .cand .who { display: flex; align-items: baseline; gap: var(--cds-gap-sm); flex-wrap: wrap; }
+.el2t .cand .name { font-weight: 600; font-size: var(--cds-font-size-heading); }
+.el2t .cand .party { font-size: var(--cds-font-size-caption); color: var(--t-muted); }
+.el2t .badge { font-size: var(--cds-font-size-caption); padding: 2px 8px; border-radius: 999px; background: var(--c); color: #fff; }
+.el2t .big { font-family: var(--t-font); font-weight: 600; letter-spacing: -.02em; font-size: calc(var(--cds-font-size-title) * 1.5); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.el2t .sub { display: flex; gap: var(--cds-gap-lg); flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.el2t .sub div { display: flex; flex-direction: column; }
+.el2t .sub span:first-child { font-size: var(--cds-font-size-caption); color: var(--t-muted); }
+.el2t .sub span:last-child { font-weight: 600; }
+.el2t .split { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: var(--t-line); }
+.el2t .split > div { height: 100%; }
+.el2t .split-l { display: flex; justify-content: space-between; font-size: var(--cds-font-size-caption); color: var(--t-muted); font-variant-numeric: tabular-nums; }
+.el2t .split .mid { position: relative; }
+.el2t .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: var(--cds-gap-md); }
+.el2t .chartbox { position: relative; min-height: 320px; }
+.el2t .map svg path.uf { stroke: #ffffff; stroke-width: 1.2; cursor: pointer; transition: opacity var(--cds-dur-slow); }
+.el2t .map svg path.uf:hover, .el2t .map svg path.uf.on { stroke: var(--t-fg); stroke-width: 2; }
+.el2t .map svg.dim path.uf:not(.reg) { opacity: .25; }
+.el2t .map text { font-size: 22px; font-weight: 600; fill: #fff; pointer-events: none; paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: 3px; }
+.el2t .legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--t-muted); align-items: center; }
+.el2t .legend .ramp { display: flex; align-items: center; gap: 4px; }
+.el2t .legend .sw { width: 18px; height: 12px; border-radius: 3px; }
+.el2t .chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+.el2t .chip { font: inherit; font-size: var(--cds-font-size-caption); padding: 2px 10px; border-radius: 999px; border: 1px solid var(--t-line); background: transparent; color: var(--t-fg); cursor: pointer; }
+.el2t .chip[aria-pressed="true"] { background: var(--t-fg); color: var(--t-bg); }
+.el2t .tip { position: absolute; pointer-events: none; background: var(--t-bg); border: 1px solid var(--t-line); border-radius: var(--cds-radius); box-shadow: var(--t-shadow); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); min-width: 11rem; z-index: 5; font-variant-numeric: tabular-nums; }
+.el2t .tip .t { color: var(--t-muted); margin-bottom: 2px; }
+.el2t .tip .r { display: flex; align-items: center; gap: 6px; }
+.el2t .tip .r i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+.el2t .tip .r span:last-child { margin-left: auto; font-weight: 600; }
+.el2t .bars text { font-size: 12px; fill: var(--t-muted); font-variant-numeric: tabular-nums; }
+.el2t .bars text.uf { fill: var(--t-fg); font-weight: 600; }
+.el2t .tablewrap { max-height: 32rem; overflow: auto; }
+.el2t table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: var(--cds-font-size-body); }
+.el2t th { position: sticky; top: 0; background: var(--t-panel); text-align: left; font-weight: var(--cds-font-weight-medium); border-bottom: 1px solid var(--t-line); padding: 0; }
+.el2t th button { all: unset; cursor: pointer; display: block; padding: var(--cds-pad-xs) var(--cds-pad-sm); }
+.el2t th button:focus-visible { outline: 2px solid var(--t-fg); }
+.el2t td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--t-line); }
+.el2t td.num, .el2t th.num { text-align: right; }
+.el2t td .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.el2t .approx { font-size: var(--cds-font-size-caption); color: var(--t-warn); }
+.el2t .search { font: inherit; padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--t-line); border-radius: var(--cds-radius); background: var(--t-bg); color: var(--t-fg); max-width: 18rem; }
+.el2t .fail { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 320px; color: var(--t-muted); font-size: var(--cds-font-size-caption); }
+.el2t .fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--t-bad); }
+.el2t [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+.el2t [data-dash-source-state=empty] { color: transparent; }
+.el2t .pesq { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.el2t .sechd { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+.el2t h2.sec { margin: 0; font-family: var(--t-font); font-weight: 600; font-size: var(--cds-font-size-title); }
+.el2t .lines text { font-size: 12px; fill: var(--t-muted); font-variant-numeric: tabular-nums; }
+.el2t .lines text.end { font-weight: 600; }
+.el2t .lines .grid line { stroke: var(--t-grid); }
+
+/* Scoreboard: candidate | map | candidate, with the abroad strip below */
+.el2t .mast { display: flex; justify-content: space-between; align-items: center; gap: var(--cds-gap-sm); flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--t-line); }
+.el2t .hd { gap: 14px; }
+.el2t .plhd { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--t-muted); gap: 8px; flex-wrap: wrap; }
+.el2t .live { display: inline-flex; align-items: center; gap: 6px; letter-spacing: .02em; text-transform: none; font-weight: 500; }
+.el2t .live .dot { width: 7px; height: 7px; border-radius: 50%; background: #1f9d55; }
+.el2t .board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr); gap: var(--cds-gap-md); align-items: stretch; }
+.el2t .cand { display: flex; flex-direction: column; border: 1px solid var(--t-line); border-radius: 18px; overflow: hidden; background: var(--t-bg); min-width: 0; }
+.el2t .cand.win { border-color: color-mix(in srgb, var(--c) 45%, var(--t-line)); box-shadow: 0 12px 32px color-mix(in srgb, var(--c) 12%, transparent); }
+.el2t .cand .ph { position: relative; aspect-ratio: 4 / 4.2; max-width: 100%; background: linear-gradient(170deg, color-mix(in srgb, var(--c) 24%, #fff), color-mix(in srgb, var(--c) 5%, #fff)); overflow: hidden; }
+.el2t .cand .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 6%; }
+.el2t .rank { position: absolute; top: 12px; left: 12px; font-size: 13px; font-weight: 700; color: #fff; background: var(--c); border-radius: 8px; padding: 4px 9px; }
+.el2t .cand .body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; flex: 1; }
+.el2t .nmline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.el2t .nm { font-size: clamp(18px, 1.9vw, 24px); font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+.el2t .eleito { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: #1f9d55; padding: 3px 8px; border-radius: 999px; }
+.el2t .meta { font-size: 12px; color: var(--t-muted); }
+.el2t .pc { font-size: clamp(34px, 4vw, 54px); font-weight: 600; letter-spacing: -.04em; line-height: 1; color: var(--c); font-variant-numeric: tabular-nums; margin-top: 6px; }
+.el2t .cand:not(.win) .pc { color: var(--t-fg); }
+.el2t .pc small { font-size: .45em; letter-spacing: 0; margin-left: 2px; }
+.el2t .bar { height: 8px; border-radius: 999px; background: var(--t-soft); overflow: hidden; position: relative; }
+.el2t .bar::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px solid var(--t-bg); }
+.el2t .bar .fillbar { display: block; height: 100%; width: 0; background: var(--c); border-radius: 999px; font-size: 0; color: transparent; transition: width .8s cubic-bezier(.2, .7, .2, 1); }
+.el2t .vt { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--t-line); font-variant-numeric: tabular-nums; }
+.el2t .vt div { display: flex; flex-direction: column; min-width: 0; }
+.el2t .vt span { font-size: 11px; color: var(--t-muted); text-transform: uppercase; letter-spacing: .06em; }
+.el2t .vt b { font-size: 15px; font-weight: 600; color: var(--t-fg); }
+.el2t .mapcard { border: 1px solid var(--t-line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; background: var(--t-bg); }
+.el2t .mchd { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.el2t .mchd h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.el2t .mapcard .chartbox { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.el2t .mapcard .chartbox svg { max-height: 520px; }
+.el2t .mapcard .legend { justify-content: center; }
+.el2t .gap { display: flex; align-items: baseline; justify-content: center; gap: 8px; font-size: 12px; color: var(--t-muted); text-transform: uppercase; letter-spacing: .08em; padding-top: 10px; border-top: 1px solid var(--t-line); }
+.el2t .gap b { font-size: 16px; color: var(--t-fg); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.el2t .extline { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 18px; border-radius: 14px; background: var(--t-soft); }
+.el2t .extline .lbl { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--t-muted); }
+.el2t .extline .mini { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.el2t .split.thin { height: 8px; }
+.el2t .resumo { display: flex; flex-direction: column; gap: 10px; padding-top: 8px; }
+.el2t .resumo h1 { font-size: clamp(26px, 3.6vw, 46px); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; max-width: 24ch; }
+.el2t .resumo .hl { color: var(--lula); }
+.el2t .resumo .lede { font-size: 16px; max-width: 70ch; }
+.el2t .pesq .sechd .lede { max-width: none; text-align: justify; text-justify: inter-word; hyphens: auto; }
+.el2t .sim { display: flex; flex-direction: column; gap: 14px; }
+.el2t .simctl { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.el2t .simlab { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.el2t #swing { width: 100%; accent-color: var(--t-fg); }
+.el2t .simout { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); gap: 12px; }
+.el2t .simout > div, .el2t .kpis > div { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 12px; background: var(--t-soft); min-width: 0; }
+.el2t .simout span, .el2t .kpis span { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--t-muted); }
+.el2t .simout b, .el2t .kpis b { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.el2t .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.el2t .kpis .kbig { font-size: 26px; } .el2t .kpis .muted { color: var(--t-muted); }
+.el2t .chip.flip { cursor: default; display: inline-flex; align-items: center; }
+.el2t .chip.flip .flag { margin-right: 6px; }
+.el2t .lines text.lab { fill: var(--t-fg); font-weight: 600; }
+@media (max-width: 520px) { .el2t .simctl { grid-template-columns: 1fr 1fr; } .el2t .simctl input { grid-column: 1 / -1; grid-row: 1; } .el2t .simlab:last-child { text-align: right; } .el2t .kpis { grid-template-columns: 1fr 1fr; } }
+@media (prefers-reduced-motion: reduce) { .el2t .bar .fillbar { transition: none; } }
+@media (max-width: 900px) {
+  .el2t .board { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .el2t .mapcard { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (max-width: 520px) {
+  .el2t .board { gap: 10px; }
+  .el2t .cand .body { padding: 12px; }
+  .el2t .vt { grid-template-columns: 1fr; }
+  .el2t .extline { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .el2t .extline .lbl { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) { .el2t .hide-sm { display: none; } }
+</style>
+
+<div class="el2t">
+  <header class="hd">
+    <div class="mast">
+      <div class="titlerow"><img id="flag-br" alt="Flag of Brazil" hidden><span class="eyebrow">Brazil 2026 · Presidential election · October 25</span></div>
+      <nav class="tabs" aria-label="Round">
+        <button class="tab" aria-current="true" id="tab-2t">2nd round</button>
+        <button class="tab" disabled id="tab-1t" title="Next step">1st round · coming soon</button>
+      </nav>
+    </div>
+    <div class="plhd"><span>Final count</span><span class="live"><span class="dot" aria-hidden="true"></span>100% of polling sections counted</span></div>
+  </header>
+
+  <section class="board" id="candidatos">
+    <article class="cand win" style="--c: var(--lula)">
+      <div class="ph"><img src="/_blob/9aaf4563631245d4a3f60e86af229490" alt="Lula"><span class="rank" aria-label="First place">1st</span></div>
+      <div class="body">
+        <div class="nmline"><span class="nm">Lula</span><span class="eleito">✓ Elected</span></div>
+        <span class="meta">PT · 13 · running mate Geraldo Alckmin (PSB)</span>
+        <span class="pc" data-source="national" data-field="valid_pct" data-where="candidate=Lula">—</span>
+        <div class="bar"><i data-source="national" data-field="valid_pct" data-where="candidate=Lula" class="fillbar"></i></div>
+        <div class="vt">
+          <div><span>Votes</span><b data-source="national" data-field="votes" data-where="candidate=Lula">—</b></div>
+          <div><span>States won</span><b data-source="states_won" data-field="states" data-where="candidate=Lula">—</b></div>
+        </div>
+      </div>
+    </article>
+    <div class="mapcard" id="mapa">
+      <div class="mchd"><h2>Winner by state</h2><div class="chips" id="regioes" role="group" aria-label="Highlight region"></div></div>
+      <div class="chartbox map" id="mapbox" data-source="state_results state_shapes"></div>
+      <div class="legend" id="legenda"></div>
+      <div class="gap"><span>Margin</span><b data-source="vote_margin" data-field="votes">—</b><span>votes</span></div>
+    </div>
+    <article class="cand " style="--c: var(--flavio)">
+      <div class="ph"><img src="/_blob/c980b27205fe0ea3225e09b0992beb02" alt="Flávio Bolsonaro"><span class="rank" aria-label="Second place">2nd</span></div>
+      <div class="body">
+        <div class="nmline"><span class="nm">Flávio Bolsonaro</span></div>
+        <span class="meta">PL · 22 · running mate Alfredo Gaspar</span>
+        <span class="pc" data-source="national" data-field="valid_pct" data-where="candidate=Flávio Bolsonaro">—</span>
+        <div class="bar"><i data-source="national" data-field="valid_pct" data-where="candidate=Flávio Bolsonaro" class="fillbar"></i></div>
+        <div class="vt">
+          <div><span>Votes</span><b data-source="national" data-field="votes" data-where="candidate=Flávio Bolsonaro">—</b></div>
+          <div><span>States won</span><b data-source="states_won" data-field="states" data-where="candidate=Flávio Bolsonaro">—</b></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <div class="extline">
+    <span class="lbl">Abroad</span>
+    <span class="mini" style="color: var(--lula)">Lula <b data-source="abroad_total" data-field="valid_pct" data-where="candidate=Lula">—</b></span>
+    <div class="split thin" id="split-ext-h" data-source="abroad_total"></div>
+    <span class="mini" style="color: var(--flavio)">Flávio <b data-source="abroad_total" data-field="valid_pct" data-where="candidate=Flávio Bolsonaro">—</b></span>
+  </div>
+
+
+  <div class="grid2">
+    <div class="card" id="margens">
+      <h2>Lead in percentage points</h2>
+      <p class="note">Gap between the two candidates in each state, from Lula’s widest lead to Flávio’s.</p>
+      <div class="chartbox bars" id="barbox" data-source="state_results"></div>
+    </div>
+  <div class="card" id="tabela">
+    <h2>Results by state</h2>
+    <p class="note">Share of valid votes. Click a column header to sort.</p>
+    <input class="search" id="busca" type="search" placeholder="Search state or region" aria-label="Search state or region">
+    <div class="tablewrap">
+      <table data-source="state_results" data-row-key="uf" id="tab">
+        <thead><tr>
+          <th data-field="uf"><button data-k="uf">UF</button></th>
+          <th data-field="state"><button data-k="state">State</button></th>
+          <th data-field="region" class="hide-sm"><button data-k="region">Region</button></th>
+          <th data-field="lula_pct" class="num"><button data-k="lula_pct">Lula</button></th>
+          <th data-field="flavio_pct" class="num"><button data-k="flavio_pct">Flávio</button></th>
+          <th data-field="margin_pp" class="num hide-sm"><button data-k="margin_pp">Margin (pp)</button></th>
+          <th data-field="winner"><button data-k="winner">Winner</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note" id="aviso">Acre, Mato Grosso do Sul and Rondônia show shares rounded by the press (marked ≈). Check the final figures on the TSE results portal.</p>
+  </div>
+  </div>
+
+  <section class="pesq" id="analises">
+    <div class="sechd">
+      <h2 class="sec">Result analysis</h2>
+      <p class="lede">Region explains <b data-source="region_eta" data-field="eta2_pct">—</b> of the variation in the vote across states. <b data-source="close_races" data-field="under5">—</b> states were decided by less than 5 points, and a uniform swing of just <b data-source="swing_to_tie" data-field="pp">—</b> points from Lula to Flávio across the country would have flipped the national result.</p>
+    </div>
+    <div class="grid2">
+      <div class="card" id="regioes-strip">
+        <h2>How each region voted</h2>
+        <p class="note">Each dot is a state (or a city, for voters abroad), placed by Lula’s share. The tick marks the region’s simple average.</p>
+        <div class="chartbox lines" id="stripbox" data-source="state_results abroad_cities region_stats"></div>
+      </div>
+      <div class="card" id="margens-hist">
+        <h2>How close each state was</h2>
+        <p class="note">Number of states by the winner’s margin, in percentage points.</p>
+        <div class="chartbox lines" id="histbox" data-source="margin_bands"></div>
+      </div>
+    </div>
+    <div class="card" id="simulador">
+      <h2>What if votes changed sides?</h2>
+      <p class="note">Uniform swing simulation: the same number of points moves from one candidate to the other in every state. Drag to see which states, and the national result, would change.</p>
+      <div class="sim" data-source="state_results national">
+        <div class="simctl">
+          <span class="simlab" style="color: var(--lula)">← toward Lula</span>
+          <input type="range" id="swing" min="-10" max="10" step="0.1" value="0" aria-label="Swing in percentage points">
+          <span class="simlab" style="color: var(--flavio)">toward Flávio →</span>
+        </div>
+        <div class="simout" id="simout"></div>
+        <div class="chips" id="simflip"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pesq" id="polls">
+    <div class="sechd">
+      <h2 class="sec">Polls vs. result</h2>
+      <p class="lede">A linear regression weighted by sample size, fitted to the Datafolha, Quaest and AtlasIntel polls, projected Lula at <b data-source="model_error" data-field="projection">—</b> on October 25. The result was <b data-source="model_error" data-field="result">—</b>, so the polls underestimated Lula by <b data-source="model_error" data-field="error_pp">—</b> points.</p>
+    </div>
+    <div class="grid2">
+      <div class="card" id="proj">
+        <h2>Valid votes projected by the polls</h2>
+        <p class="note">Line: trend estimated from the polls released up to each day. Band: 95% interval. Dots: each poll. Diamond: actual result.</p>
+        <div class="chartbox lines" id="projbox" data-source="poll_trend polls national"></div>
+      </div>
+      <div class="card" id="chance">
+        <h2>Chance of winning according to the polls</h2>
+        <p class="note">Probability of each candidate passing 50% of valid votes, adding a typical 2-point polling error to the trend’s uncertainty.</p>
+        <div class="chartbox lines" id="chancebox" data-source="poll_trend"></div>
+      </div>
+    </div>
+    <div class="card" id="institutos">
+      <h2>Error of each pollster’s final poll</h2>
+      <p class="note">Lula’s actual share minus his share in the pollster’s last released poll. A positive value means the poll underestimated Lula.</p>
+      <div class="tablewrap">
+        <table data-source="pollster_error" data-row-key="pollster" id="tabinst">
+          <thead><tr>
+            <th data-field="pollster">Pollster</th>
+            <th data-field="released" class="hide-sm">Released</th>
+            <th data-field="lula_poll" class="num">Lula in poll</th>
+            <th data-field="lula_result" class="num">Lula actual</th>
+            <th data-field="error_pp" class="num">Error (pp)</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note">The Datafolha round of Oct 15 was derived from the change reported in the following round. Polls with no published sample size are weighted as 2,000 interviews. This is a statistical estimate, not an official forecast.</p>
+    </div>
+    <div class="grid2">
+      <div class="card" id="vies">
+        <h2>House effect by pollster</h2>
+        <p class="note">How far, on average, each pollster sat above or below the overall poll trend for Lula (house effect), and the mean error of all its rounds against the result.</p>
+        <div class="chartbox lines" id="viesbox" data-source="house_effects" style="min-height: 180px"></div>
+      </div>
+      <div class="card" id="calibracao">
+        <h2>Forecast calibration</h2>
+        <p class="note">Brier score of the chance-of-winning curve: mean of (probability given to Lula − 1)² over the forecast days. Zero is a perfect forecast; 0.25 is what you get by always saying 50%.</p>
+        <div class="kpis">
+          <div><span>Brier score</span><b class="kbig" data-source="brier" data-field="brier">—</b></div>
+          <div><span>Always 50%</span><b class="kbig muted">0.25</b></div>
+          <div><span>Days scored</span><b class="kbig" data-source="brier" data-field="days">—</b></div>
+        </div>
+        <p class="note" id="brier-txt"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid2" id="exterior">
+    <div class="card">
+      <h2>Brazilians abroad</h2>
+      <p class="note">Valid votes from voters registered outside Brazil, 100% counted.</p>
+      <div class="sub">
+        <div><span>Lula</span><span class="big" style="color: var(--lula)" data-source="abroad_total" data-field="valid_pct" data-where="candidate=Lula">—</span></div>
+        <div><span>Flávio Bolsonaro</span><span class="big" style="color: var(--flavio)" data-source="abroad_total" data-field="valid_pct" data-where="candidate=Flávio Bolsonaro">—</span></div>
+      </div>
+      <div class="split" id="split-ext" data-source="abroad_total"></div>
+      <div class="sub">
+        <div><span>Lula votes</span><span data-source="abroad_total" data-field="votes" data-where="candidate=Lula">—</span></div>
+        <div><span>Flávio votes</span><span data-source="abroad_total" data-field="votes" data-where="candidate=Flávio Bolsonaro">—</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Cities with the most Brazilian voters</h2>
+      <p class="note">Winner’s share in each city with an electoral zone. Partial list, from press coverage.</p>
+      <div class="chartbox bars" id="extbox" data-source="abroad_cities" style="min-height: 220px"></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="flags.js"></script>
+<script>
+(function () {
+  const FL = window.EL_FLAGS || { uf: {}, country: {} };
+  const FOTOS = window.EL_FOTOS || {};
+  const br = document.getElementById('flag-br'); if (FL.country['Brazil']) { br.src = FL.country['Brazil']; br.hidden = false; }
+  document.querySelectorAll('.el2t .foto').forEach((el) => { const src = FOTOS[el.dataset.cand]; if (src) { const i = document.createElement('img'); i.src = src; i.alt = el.dataset.cand; el.textContent = ''; el.appendChild(i); } });
+  const L = 'Lula', F = 'Flávio Bolsonaro';
+  const pct = (x) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(x) + '%';
+  const pp = (x) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(x);
+  const int = (x) => new Intl.NumberFormat('en-US').format(x);
+  const col = (v) => v === L ? 'var(--lula)' : 'var(--flavio)';
+  const op = (m) => 0.35 + 0.65 * Math.min(1, m / 40);
+  const REG = ['North', 'Northeast', 'Center-West', 'Southeast', 'South'];
+  const SMALL = new Set(['DF', 'SE', 'AL', 'PB', 'RN', 'PE', 'ES', 'RJ']);
+  let region = null, sortK = 'margin_pp', sortDir = -1, busca = '';
+
+  dash.calc('states_won', {
+    title: 'States won by candidate',
+    description: 'Counts the states (26 states plus the Federal District) where each candidate had the most valid votes.',
+    inputs: ['state_results'],
+    fn: (state_results) => ['Lula', 'Flávio Bolsonaro'].map((c) => ({ candidate: c, states: state_results.filter((r) => r.winner === c).length }))
+  });
+  dash.calc('vote_margin', {
+    title: 'National vote margin',
+    description: 'Lula’s votes minus Flávio Bolsonaro’s votes nationwide.',
+    inputs: ['national'],
+    fn: (national) => [{ votes: Number(national.find((r) => r.candidate === 'Lula').votes) - Number(national.find((r) => r.candidate === 'Flávio Bolsonaro').votes) }]
+  });
+
+  dash.calc('poll_trend', {
+    title: 'Poll trend (regression)',
+    description: 'For each day, a sample-weighted linear regression on the polls released so far: Lula’s projection, 95% interval and chance of passing 50% with a typical 2 pp error.',
+    inputs: ['polls'],
+    fn: (polls) => {
+      const t0 = Date.UTC(2026, 9, 1), day = 864e5;
+      const erf = (z) => { const t = 1 / (1 + 0.3275911 * Math.abs(z)); const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-z * z); return z >= 0 ? y : -y; };
+      const sum = (a, f) => a.reduce((t, p) => t + f(p), 0);
+      const pts = polls.map((p) => ({ x: (Date.parse(p.released) - t0) / day, y: Number(p.lula_pct), w: (Number(p.sample) || 2000) / 2000 }));
+      const out = [];
+      for (let d = 7; d <= 24; d++) { // Oct 8 to Oct 25
+        const s = pts.filter((p) => p.x <= d);
+        if (s.length < 3) continue;
+        const W = sum(s, (p) => p.w), xm = sum(s, (p) => p.w * p.x) / W, ym = sum(s, (p) => p.w * p.y) / W;
+        const sxx = sum(s, (p) => p.w * (p.x - xm) ** 2);
+        const b = sum(s, (p) => p.w * (p.x - xm) * (p.y - ym)) / sxx, a = ym - b * xm;
+        const s2 = Math.max(1, sum(s, (p) => p.w * (p.y - a - b * p.x) ** 2) / (s.length - 2));
+        const se = Math.sqrt(s2 * (1 / W + (d - xm) ** 2 / sxx));
+        const lula = a + b * d, sd = Math.sqrt(se * se + 4);
+        const chance = 0.5 * (1 + erf((lula - 50) / sd / Math.SQRT2));
+        out.push({ date: new Date(t0 + d * day).toISOString().slice(0, 10), lula, lo: lula - 1.96 * se, hi: lula + 1.96 * se, chance_lula: chance, polls: s.length });
+      }
+      return out;
+    }
+  });
+  dash.calc('model_error', {
+    title: 'Poll projection vs. result',
+    description: 'Regression projection for Lula on Oct 25 compared with the official share of valid votes.',
+    inputs: ['poll_trend', 'national'],
+    fn: (poll_trend, national) => {
+      const projection = poll_trend[poll_trend.length - 1].lula, result = Number(national.find((r) => r.candidate === 'Lula').valid_pct);
+      return [{ projection, result, error_pp: result - projection }];
+    }
+  });
+  dash.calc('pollster_error', {
+    title: 'Final-poll error by pollster',
+    description: 'Lula’s actual share minus his share in each pollster’s last released poll.',
+    inputs: ['polls', 'national'],
+    fn: (polls, national) => {
+      const actual = Number(national.find((r) => r.candidate === 'Lula').valid_pct);
+      const last = new Map();
+      polls.forEach((p) => { const u = last.get(p.pollster); if (!u || p.released > u.released) last.set(p.pollster, p); });
+      return [...last].map(([pollster, p]) => ({ pollster, released: p.released, lula_poll: Number(p.lula_pct), lula_result: actual, error_pp: actual - Number(p.lula_pct) }));
+    }
+  });
+
+  dash.calc('region_stats', {
+    title: 'Lula’s share by region',
+    description: 'Simple mean, minimum and maximum of Lula’s share across the states of each region.',
+    inputs: ['state_results'],
+    fn: (state_results) => ['North', 'Northeast', 'Center-West', 'Southeast', 'South'].map((region) => {
+      const v = state_results.filter((r) => r.region === region).map((r) => Number(r.lula_pct));
+      return { region, ufs: v.length, mean: v.reduce((a, b) => a + b, 0) / v.length, min: Math.min(...v), max: Math.max(...v) };
+    })
+  });
+  dash.calc('region_eta', {
+    title: 'Variation explained by region',
+    description: 'Eta²: between-region sum of squares divided by the total sum of squares of Lula’s share across the 27 states.',
+    inputs: ['state_results'],
+    fn: (state_results) => {
+      const y = state_results.map((r) => Number(r.lula_pct)), m = y.reduce((a, b) => a + b, 0) / y.length;
+      const sst = y.reduce((a, v) => a + (v - m) ** 2, 0);
+      const groups = {};
+      state_results.forEach((r) => { (groups[r.region] = groups[r.region] || []).push(Number(r.lula_pct)); });
+      const ssb = Object.values(groups).reduce((a, g) => { const gm = g.reduce((x, z) => x + z, 0) / g.length; return a + g.length * (gm - m) ** 2; }, 0);
+      return [{ eta2: ssb / sst, eta2_pct: (100 * ssb) / sst }];
+    }
+  });
+  dash.calc('margin_bands', {
+    title: 'States by margin band',
+    description: 'How many states each candidate won in each margin band (percentage points).',
+    inputs: ['state_results'],
+    fn: (state_results) => [[0, 5, 'under 5'], [5, 10, '5 to 10'], [10, 20, '10 to 20'], [20, 30, '20 to 30'], [30, 100, 'over 30']].map(([a, b, band]) => {
+      const inBand = state_results.filter((r) => Number(r.margin_pp) >= a && Number(r.margin_pp) < b);
+      return { band, lula: inBand.filter((r) => r.winner === 'Lula').length, flavio: inBand.filter((r) => r.winner !== 'Lula').length };
+    })
+  });
+  dash.calc('close_races', {
+    title: 'States decided by under 5 points',
+    description: 'Count of states where the margin between the candidates was below 5 percentage points.',
+    inputs: ['state_results'],
+    fn: (state_results) => [{ under5: state_results.filter((r) => Number(r.margin_pp) < 5).length }]
+  });
+  dash.calc('swing_to_tie', {
+    title: 'Swing that would tie the election',
+    description: 'Points that would need to move uniformly from Lula to Flávio to tie at 50% nationwide.',
+    inputs: ['national'],
+    fn: (national) => [{ pp: Number(national.find((r) => r.candidate === 'Lula').valid_pct) - 50 }]
+  });
+  dash.calc('house_effects', {
+    title: 'House effect by pollster',
+    description: 'Mean residual of each pollster against the weighted regression of all polls, and the mean error of its rounds against the result (Lula’s share).',
+    inputs: ['polls', 'national'],
+    fn: (polls, national) => {
+      const actual = Number(national.find((r) => r.candidate === 'Lula').valid_pct);
+      const pts = polls.map((p) => ({ i: p.pollster, x: (Date.parse(p.released) - Date.UTC(2026, 9, 1)) / 864e5, y: Number(p.lula_pct), w: (Number(p.sample) || 2000) / 2000 }));
+      const sum = (f) => pts.reduce((t, p) => t + f(p), 0);
+      const W = sum((p) => p.w), xm = sum((p) => p.w * p.x) / W, ym = sum((p) => p.w * p.y) / W;
+      const b = sum((p) => p.w * (p.x - xm) * (p.y - ym)) / sum((p) => p.w * (p.x - xm) ** 2), a = ym - b * xm;
+      return [...new Set(pts.map((p) => p.i))].map((pollster) => {
+        const s = pts.filter((p) => p.i === pollster);
+        return { pollster, rounds: s.length, house_effect: s.reduce((t, p) => t + p.y - (a + b * p.x), 0) / s.length, mean_error: s.reduce((t, p) => t + actual - p.y, 0) / s.length };
+      });
+    }
+  });
+  dash.calc('brier', {
+    title: 'Brier score of the chance of winning',
+    description: 'Mean of (chance given to Lula − 1)² over the forecast days, since Lula won.',
+    inputs: ['poll_trend'],
+    fn: (poll_trend) => [{ brier: poll_trend.reduce((t, r) => t + (r.chance_lula - 1) ** 2, 0) / poll_trend.length, days: poll_trend.length }]
+  });
+
+  const root = document.querySelector('.el2t');
+  const fill = (sel, f) => root.querySelectorAll(sel).forEach((el) => { el.textContent = f(el); el.classList.remove('dash-skeleton'); });
+
+  // region chips
+  const chips = document.getElementById('regioes');
+  ['All', ...REG].forEach((r) => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.type = 'button'; b.textContent = r;
+    b.setAttribute('aria-pressed', r === 'All' ? 'true' : 'false');
+    b.addEventListener('click', () => {
+      region = r === 'All' ? null : r;
+      chips.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
+      draw();
+    });
+    chips.appendChild(b);
+  });
+  document.getElementById('busca').addEventListener('input', (e) => { busca = e.target.value.toLowerCase(); drawTable(); });
+  document.querySelectorAll('#tab th button').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.k; sortDir = sortK === k ? -sortDir : (['uf', 'state', 'region', 'winner'].includes(k) ? 1 : -1); sortK = k; drawTable();
+  }));
+
+  function tipHTML(tip, r) {
+    tip.selectAll('*').remove();
+    const th = tip.append('div').attr('class', 't'); if (FL.uf[r.uf]) th.append('img').attr('class', 'flag').attr('src', FL.uf[r.uf]).attr('alt', ''); th.append('span').text(`${r.state} · ${r.region}`);
+    [[L, r.lula_pct], [F, r.flavio_pct]].forEach(([n, v]) => {
+      const row = tip.append('div').attr('class', 'r');
+      row.append('i').style('background', col(n));
+      row.append('span').text(n);
+      row.append('span').text(pct(v));
+    });
+    if (r.precision === 'approximate') tip.append('div').attr('class', 'approx').text('≈ rounded value');
+  }
+  function place(tip, box, ev) {
+    const b = box.getBoundingClientRect(), t = tip.node().getBoundingClientRect();
+    let x = ev.clientX - b.left + 12, y = ev.clientY - b.top + 12;
+    if (x + t.width > b.width) x = Math.max(0, ev.clientX - b.left - t.width - 12);
+    if (y + t.height > b.height) y = Math.max(0, ev.clientY - b.top - t.height - 12);
+    tip.style('left', x + 'px').style('top', y + 'px');
+  }
+
+  let rowsCache = [];
+  function drawTable() {
+    const tb = d3.select('#tab tbody');
+    const s = dash.data('state_results');
+    tb.selectAll('*').remove();
+    if (s.status !== 'ok') return;
+    document.querySelectorAll('#tab th').forEach((th) => {
+      const k = th.querySelector('button').dataset.k;
+      th.setAttribute('aria-sort', k === sortK ? (sortDir > 0 ? 'ascending' : 'descending') : 'none');
+    });
+    const rows = s.data.map((r) => ({ ...r, lula_pct: +r.lula_pct, flavio_pct: +r.flavio_pct, margin_pp: +r.margin_pp }))
+      .filter((r) => !busca || (r.state + ' ' + r.region + ' ' + r.uf).toLowerCase().includes(busca))
+      .sort((a, b) => {
+        const x = a[sortK], y = b[sortK];
+        return (typeof x === 'number' ? x - y : String(x).localeCompare(String(y), 'en-US')) * sortDir;
+      });
+    rows.forEach((r) => {
+      const tr = tb.append('tr');
+      tr.append('td').text(r.uf);
+      const te = tr.append('td'); if (FL.uf[r.uf]) te.append('img').attr('class', 'flag').attr('src', FL.uf[r.uf]).attr('alt', ''); te.append('span').text(r.state);
+      tr.append('td').attr('class', 'hide-sm').text(r.region);
+      tr.append('td').attr('class', 'num').text((r.precision === 'approximate' ? '≈ ' : '') + pct(r.lula_pct));
+      tr.append('td').attr('class', 'num').text((r.precision === 'approximate' ? '≈ ' : '') + pct(r.flavio_pct));
+      tr.append('td').attr('class', 'num hide-sm').text(pp(r.margin_pp));
+      const v = tr.append('td');
+      v.append('span').attr('class', 'dot').style('background', col(r.winner));
+      v.append('span').text(r.winner);
+    });
+  }
+
+  function drawMap(res, geo) {
+    const box = d3.select('#mapbox');
+    box.selectAll('*').remove();
+    const by = new Map(res.map((r) => [r.uf, r]));
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', '0 0 1000 971').attr('role', 'img')
+      .attr('aria-label', 'Map of Brazil by winner in each state').classed('dim', !!region);
+    const tip = box.append('div').attr('class', 'tip').style('display', 'none');
+    svg.selectAll('path').data(geo).join('path')
+      .attr('class', (g) => 'uf' + (region && by.get(g.uf) && by.get(g.uf).region === region ? ' reg' : ''))
+      .attr('d', (g) => g.path)
+      .attr('fill', (g) => { const r = by.get(g.uf); return r ? col(r.winner) : 'var(--t-line)'; })
+      .attr('fill-opacity', (g) => { const r = by.get(g.uf); return r ? op(+r.margin_pp) : 1; })
+      .on('pointermove', function (ev, g) {
+        const r = by.get(g.uf); if (!r) return;
+        svg.selectAll('path.uf').classed('on', false); d3.select(this).classed('on', true).raise();
+        tipHTML(tip, r); tip.style('display', null); place(tip, box.node(), ev);
+      })
+      .on('pointerleave', function () { d3.select(this).classed('on', false); tip.style('display', 'none'); });
+    svg.selectAll('text').data(geo.filter((g) => !SMALL.has(g.uf))).join('text')
+      .attr('x', (g) => +g.cx).attr('y', (g) => +g.cy).attr('text-anchor', 'middle').attr('dy', '.35em').text((g) => g.uf);
+
+  }
+
+  function drawLegend() {
+    const lg = d3.select('#legenda'); lg.selectAll('*').remove();
+    [[L, 'var(--lula)'], [F, 'var(--flavio)']].forEach(([n, c]) => {
+      const g = lg.append('div').attr('class', 'ramp');
+      g.append('span').text(n);
+      [5, 15, 25, 40].forEach((m) => g.append('span').attr('class', 'sw').style('background', c).style('opacity', op(m)));
+    });
+    lg.append('span').text('margin: up to 10 · 10–20 · 20–30 · 30+ pp');
+  }
+
+  function drawBars(res) {
+    const box = d3.select('#barbox'); box.selectAll('*').remove();
+    const W = Math.max(280, box.node().clientWidth);
+    const rows = res.map((r) => ({ ...r, d: +r.lula_pct - +r.flavio_pct })).sort((a, b) => b.d - a.d);
+    const rh = 20, top = 22, H = top + rows.length * rh + 6;
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').text('+00,0');
+    const lw = probe.node().getComputedTextLength() + 8; probe.remove();
+    const m = d3.max(rows, (r) => Math.abs(r.d));
+    const ul = 56;
+    const x = d3.scaleLinear([-m, m], [ul + lw, W - lw]);
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', top - 6).attr('y2', H).attr('stroke', 'var(--t-axis)');
+    svg.append('text').attr('x', x(0) - 6).attr('y', 12).attr('text-anchor', 'end').text('← Lula');
+    svg.append('text').attr('x', x(0) + 6).attr('y', 12).text('Flávio →');
+    const tip = box.append('div').attr('class', 'tip').style('display', 'none');
+    const g = svg.selectAll('g.r').data(rows).join('g').attr('class', 'r').attr('transform', (r, i) => `translate(0,${top + i * rh})`);
+    g.append('rect').attr('x', 0).attr('width', W).attr('height', rh).attr('fill', 'transparent');
+    g.append('image').attr('href', (r) => FL.uf[r.uf] || null).attr('x', 0).attr('y', 3).attr('width', 21).attr('height', 14).attr('preserveAspectRatio', 'xMidYMid slice');
+    g.append('text').attr('class', 'uf').attr('x', 26).attr('y', rh / 2).attr('dy', '.35em').text((r) => r.uf);
+    g.append('rect').attr('y', 3).attr('height', rh - 6).attr('rx', 3)
+      .attr('x', (r) => r.d > 0 ? x(0) - (x(0) - x(-r.d)) : x(0))
+      .attr('width', (r) => Math.abs(x(Math.abs(r.d)) - x(0)))
+      .attr('fill', (r) => col(r.winner)).attr('fill-opacity', (r) => r.uf === 'MG' ? 1 : .85);
+    g.append('text').attr('y', rh / 2).attr('dy', '.35em')
+      .attr('x', (r) => r.d > 0 ? x(-r.d) - 4 : x(-r.d) + 4)
+      .attr('text-anchor', (r) => r.d > 0 ? 'end' : 'start')
+      .text((r) => (r.precision === 'approximate' ? '≈' : '+') + pp(Math.abs(r.d)));
+    g.on('pointermove', (ev, r) => { tipHTML(tip, r); tip.style('display', null); place(tip, box.node(), ev); })
+     .on('pointerleave', () => tip.style('display', 'none'));
+  }
+
+  function drawCities(rows) {
+    const box = d3.select('#extbox'); box.selectAll('*').remove();
+    const W = Math.max(280, box.node().clientWidth);
+    const data = rows.map((r) => ({ ...r, lula_pct: +r.lula_pct, winner_pct: +r.winner_pct })).sort((a, b) => b.lula_pct - a.lula_pct);
+    const rh = 24, H = data.length * rh + 4;
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').text('New York · USA');
+    const lw = Math.max(...data.map((r) => { probe.text(r.city); return probe.node().getComputedTextLength(); })) + 38;
+    probe.text('100%'); const vw = probe.node().getComputedTextLength() + 8; probe.remove();
+    const x = d3.scaleLinear([0, 100], [lw, W - vw]);
+    const tip = box.append('div').attr('class', 'tip').style('display', 'none');
+    svg.append('line').attr('x1', x(50)).attr('x2', x(50)).attr('y1', 0).attr('y2', H).attr('stroke', 'var(--t-ref)').attr('stroke-dasharray', '3 3');
+    const g = svg.selectAll('g.c').data(data).join('g').attr('class', 'c').attr('transform', (r, i) => `translate(0,${i * rh})`);
+    g.append('image').attr('href', (r) => FL.country[r.country] || null).attr('x', 0).attr('y', 5).attr('width', 21).attr('height', 14).attr('preserveAspectRatio', 'xMidYMid slice');
+    g.append('text').attr('class', 'uf').attr('x', 28).attr('y', rh / 2).attr('dy', '.35em').text((r) => r.city);
+    g.append('rect').attr('x', x(0)).attr('y', 4).attr('height', rh - 8).attr('rx', 3).attr('width', (r) => x(r.lula_pct) - x(0)).attr('fill', 'var(--lula)');
+    g.append('rect').attr('x', (r) => x(r.lula_pct)).attr('y', 4).attr('height', rh - 8).attr('rx', 3).attr('width', (r) => x(100) - x(r.lula_pct)).attr('fill', 'var(--flavio)');
+    g.append('text').attr('x', W).attr('y', rh / 2).attr('dy', '.35em').attr('text-anchor', 'end').text((r) => r.winner_pct + '%')
+      .style('fill', (r) => col(r.winner));
+    g.on('pointermove', (ev, r) => {
+      tip.selectAll('*').remove();
+      const th = tip.append('div').attr('class', 't'); if (FL.country[r.country]) th.append('img').attr('class', 'flag').attr('src', FL.country[r.country]).attr('alt', ''); th.append('span').text(`${r.city} · ${r.country}`);
+      [[L, r.lula_pct], [F, 100 - r.lula_pct]].forEach(([n, v]) => {
+        const row = tip.append('div').attr('class', 'r');
+        row.append('i').style('background', col(n)); row.append('span').text(n); row.append('span').text('≈ ' + v + '%');
+      });
+      tip.style('display', null); place(tip, box.node(), ev);
+    }).on('pointerleave', () => tip.style('display', 'none'));
+  }
+
+  const dfmt = (iso) => { const [y, m, d] = iso.split('-'); return `Oct ${+d}`; };
+  const pct1 = (x) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(x) + '%';
+  const sgn = (x) => (x > 0 ? '+' : '') + pp(x);
+  const toDate = (iso) => new Date(iso + 'T12:00:00Z');
+
+  function lineFrame(box, H, yDom, yFmt, ticks, rightLabels) {
+    const W = Math.max(280, box.node().clientWidth);
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text');
+    const lm = Math.max(...ticks.map((t) => { probe.text(yFmt(t)); return probe.node().getComputedTextLength(); })) + 8;
+    const rm = Math.max(...rightLabels.map((t) => { probe.attr('class', 'end').text(t); return probe.node().getComputedTextLength(); })) + 10;
+    probe.remove();
+    const x = d3.scaleUtc([toDate('2026-10-07'), toDate('2026-10-25')], [lm, W - rm]);
+    const y = d3.scaleLinear(yDom, [H - 40, 14]);
+    const g = svg.append('g').attr('class', 'grid');
+    ticks.forEach((t) => {
+      g.append('line').attr('x1', lm).attr('x2', W - rm).attr('y1', y(t)).attr('y2', y(t)).attr('stroke-dasharray', t === 50 || t === 0.5 ? '3 3' : null);
+      svg.append('text').attr('x', lm - 8).attr('y', y(t)).attr('dy', '.35em').attr('text-anchor', 'end').text(yFmt(t));
+    });
+    // one tick per day; a label every day when it fits, otherwise every other day (always the 25th)
+    const passo = x(toDate('2026-10-08')) - x(toDate('2026-10-07')) < 20 ? 2 : 1;
+    for (let d = 7; d <= 25; d++) {
+      const xd = x(toDate(`2026-10-${String(d).padStart(2, '0')}`));
+      svg.append('line').attr('x1', xd).attr('x2', xd).attr('y1', H - 40).attr('y2', H - 35).attr('stroke', 'var(--t-axis)');
+      const mostra = d === 25 || ((25 - d) % passo === 0 && !(passo === 2 && d === 24));
+      if (mostra) svg.append('text').attr('x', xd).attr('y', H - 22).attr('text-anchor', 'middle').style('font-weight', d === 25 ? 600 : null).text(d);
+    }
+    svg.append('text').attr('x', (x.range()[0] + x.range()[1]) / 2).attr('y', H - 4).attr('text-anchor', 'middle').text('days of October 2026');
+    svg.append('line').attr('x1', x(toDate('2026-10-25'))).attr('x2', x(toDate('2026-10-25'))).attr('y1', 14).attr('y2', H - 40).attr('stroke', 'var(--t-muted)').attr('stroke-dasharray', '2 3');
+    svg.append('text').attr('x', x(toDate('2026-10-25')) - 4).attr('y', 9).attr('text-anchor', 'end').style('font-weight', 600).text('election');
+    return { svg, x, y, W };
+  }
+
+  function drawProj(tend, pesq, nac) {
+    const box = d3.select('#projbox'); box.selectAll('*').remove();
+    const urL = +nac.find((r) => r.candidate === L).valid_pct, urF = 100 - urL;
+    const labL = 'Result ' + pct1(urL), labF = 'Result ' + pct1(urF);
+    const { svg, x, y } = lineFrame(box, 300, [44, 56], (t) => t + '%', [44, 47, 50, 53, 56], [labL, labF]);
+    const tip = box.append('div').attr('class', 'tip').style('display', 'none');
+    const T = tend.map((r) => ({ ...r, dt: toDate(r.date) }));
+    [[L, (r) => r.lula, (r) => r.lo, (r) => r.hi], [F, (r) => 100 - r.lula, (r) => 100 - r.hi, (r) => 100 - r.lo]].forEach(([n, f, lo, hi]) => {
+      svg.append('path').attr('d', d3.area().x((r) => x(r.dt)).y0((r) => y(lo(r))).y1((r) => y(hi(r)))(T)).attr('fill', col(n)).attr('fill-opacity', .15);
+      svg.append('path').attr('d', d3.line().x((r) => x(r.dt)).y((r) => y(f(r)))(T)).attr('fill', 'none').attr('stroke', col(n)).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+    });
+    pesq.forEach((p) => {
+      const cx = x(toDate(p.released));
+      svg.append('circle').attr('cx', cx).attr('cy', y(+p.lula_pct)).attr('r', 3.5).attr('fill', 'var(--lula)').attr('fill-opacity', .55);
+      svg.append('circle').attr('cx', cx).attr('cy', y(100 - +p.lula_pct)).attr('r', 3.5).attr('fill', 'var(--flavio)').attr('fill-opacity', .55);
+    });
+    const xe = x(toDate('2026-10-25'));
+    [[urL, L, labL], [urF, F, labF]].forEach(([v, n, lab]) => {
+      svg.append('path').attr('d', d3.symbol(d3.symbolDiamond, 70)()).attr('transform', `translate(${xe},${y(v)})`).attr('fill', col(n)).attr('stroke', 'var(--t-panel)');
+      svg.append('text').attr('class', 'end').attr('x', xe + 8).attr('y', y(v)).attr('dy', '.35em').style('fill', col(n)).text(lab);
+    });
+    const hl = svg.append('line').attr('y1', 14).attr('y2', 260).attr('stroke', 'var(--t-ref)').style('display', 'none');
+    svg.on('pointermove', (ev) => {
+      const [mx] = d3.pointer(ev);
+      const r = T[d3.minIndex(T, (t) => Math.abs(x(t.dt) - mx))];
+      hl.attr('x1', x(r.dt)).attr('x2', x(r.dt)).style('display', null);
+      tip.selectAll('*').remove();
+      tip.append('div').attr('class', 't').text(`${dfmt(r.date)} · ${r.polls} polls`);
+      [[L, r.lula], [F, 100 - r.lula]].forEach(([n, v]) => { const row = tip.append('div').attr('class', 'r'); row.append('i').style('background', col(n)); row.append('span').text(n); row.append('span').text(pct1(v)); });
+      pesq.filter((p) => p.released === r.date).forEach((p) => tip.append('div').attr('class', 't').text(`${p.pollster}: Lula ${pct1(+p.lula_pct)}`));
+      tip.style('display', null); place(tip, box.node(), ev);
+    }).on('pointerleave', () => { hl.style('display', 'none'); tip.style('display', 'none'); });
+  }
+
+  function drawChance(tend) {
+    const box = d3.select('#chancebox'); box.selectAll('*').remove();
+    const last = tend[tend.length - 1];
+    const labL = 'Lula ' + Math.round(last.chance_lula * 100) + '%', labF = 'Flávio ' + Math.round((1 - last.chance_lula) * 100) + '%';
+    const { svg, x, y } = lineFrame(box, 300, [0, 1], (t) => Math.round(t * 100) + '%', [0, 0.25, 0.5, 0.75, 1], [labL, labF]);
+    const T = tend.map((r) => ({ ...r, dt: toDate(r.date) }));
+    const ends = [];
+    [[L, (r) => r.chance_lula, labL], [F, (r) => 1 - r.chance_lula, labF]].forEach(([n, f, lab]) => {
+      svg.append('path').attr('d', d3.line().x((r) => x(r.dt)).y((r) => y(f(r)))(T)).attr('fill', 'none').attr('stroke', col(n)).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+      ends.push({ n, lab, yy: y(f(last)) });
+    });
+    if (Math.abs(ends[0].yy - ends[1].yy) < 14) { const m = (ends[0].yy + ends[1].yy) / 2, up = ends[0].yy <= ends[1].yy ? 0 : 1; ends[up].yy = m - 7; ends[1 - up].yy = m + 7; }
+    const xe = x(toDate('2026-10-25'));
+    ends.forEach((e) => svg.append('text').attr('class', 'end').attr('x', xe + 8).attr('y', e.yy).attr('dy', '.35em').style('fill', col(e.n)).text(e.lab));
+    const tip = box.append('div').attr('class', 'tip').style('display', 'none');
+    svg.on('pointermove', (ev) => {
+      const [mx] = d3.pointer(ev);
+      const r = T[d3.minIndex(T, (t) => Math.abs(x(t.dt) - mx))];
+      tip.selectAll('*').remove();
+      tip.append('div').attr('class', 't').text(dfmt(r.date));
+      [[L, r.chance_lula], [F, 1 - r.chance_lula]].forEach(([n, v]) => { const row = tip.append('div').attr('class', 'r'); row.append('i').style('background', col(n)); row.append('span').text(n); row.append('span').text(Math.round(v * 100) + '%'); });
+      tip.style('display', null); place(tip, box.node(), ev);
+    }).on('pointerleave', () => tip.style('display', 'none'));
+  }
+
+  function drawInst(rows) {
+    const tb = d3.select('#tabinst tbody'); tb.selectAll('*').remove();
+    rows.slice().sort((a, b) => b.error_pp - a.error_pp).forEach((r) => {
+      const tr = tb.append('tr');
+      tr.append('td').text(r.pollster);
+      tr.append('td').attr('class', 'hide-sm').text(dfmt(r.released));
+      tr.append('td').attr('class', 'num').text(pct1(r.lula_poll));
+      tr.append('td').attr('class', 'num').text(pct(r.lula_result));
+      tr.append('td').attr('class', 'num').text(sgn(r.error_pp));
+    });
+  }
+
+  function bigPct(rows, src) {
+    root.querySelectorAll(`.pc[data-source="${src}"]`).forEach((el) => {
+      const r = rows.find((x) => x.candidate === el.dataset.where.split('=')[1]);
+      el.textContent = pct(+r.valid_pct).replace('%', '');
+      const sm = document.createElement('small'); sm.textContent = '%'; el.appendChild(sm);
+    });
+  }
+  const dec2 = (x) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(x);
+  const dec3 = (x) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(x);
+
+  function drawStrip(res, cid, stats) {
+    const box = d3.select('#stripbox'); box.selectAll('*').remove();
+    const W = Math.max(280, box.node().clientWidth);
+    const rows = [...stats.map((s) => ({ nome: s.region, mean: +s.mean, pts: res.filter((r) => r.region === s.region).map((r) => ({ lab: r.uf, v: +r.lula_pct, win: r.winner, flag: FL.uf[r.uf], det: r.state })) })),
+      { nome: 'Abroad', mean: null, pts: cid.map((c) => ({ lab: c.city, v: +c.lula_pct, win: c.winner, flag: FL.country[c.country], det: `${c.city} · ${c.country}` })) }];
+    const rh = 40, top = 8, H = top + rows.length * rh + 28;
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').attr('class', 'lab').text('Center-West');
+    const lm = probe.node().getComputedTextLength() + 14; probe.remove();
+    const x = d3.scaleLinear([15, 85], [lm, W - 10]);
+    [20, 35, 50, 65, 80].forEach((t) => {
+      svg.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top).attr('y2', H - 24).attr('stroke', t === 50 ? 'var(--t-ref)' : 'var(--t-grid)').attr('stroke-dasharray', t === 50 ? '3 3' : null);
+      svg.append('text').attr('x', x(t)).attr('y', H - 8).attr('text-anchor', 'middle').text(t + '%');
+    });
+    const tip = box.append('div').attr('class', 'tip').style('display', 'none');
+    rows.forEach((r, i) => {
+      const cy = top + i * rh + rh / 2;
+      svg.append('text').attr('class', 'lab').attr('x', 0).attr('y', cy).attr('dy', '.35em').text(r.nome);
+      svg.append('line').attr('x1', lm).attr('x2', W - 10).attr('y1', cy).attr('y2', cy).attr('stroke', 'var(--t-grid)');
+      if (r.mean != null) svg.append('line').attr('x1', x(r.mean)).attr('x2', x(r.mean)).attr('y1', cy - 13).attr('y2', cy + 13).attr('stroke', 'var(--t-fg)').attr('stroke-width', 2).attr('stroke-linecap', 'round');
+      r.pts.forEach((p) => {
+        svg.append('circle').attr('cx', x(p.v)).attr('cy', cy).attr('r', 7).attr('fill', col(p.win)).attr('fill-opacity', .75).attr('stroke', '#fff').attr('stroke-width', 1.5)
+          .on('pointermove', (ev) => {
+            tip.selectAll('*').remove();
+            const th = tip.append('div').attr('class', 't'); if (p.flag) th.append('img').attr('class', 'flag').attr('src', p.flag).attr('alt', ''); th.append('span').text(p.det);
+            [[L, p.v], [F, 100 - p.v]].forEach(([n, v]) => { const row = tip.append('div').attr('class', 'r'); row.append('i').style('background', col(n)); row.append('span').text(n); row.append('span').text((r.nome === 'Abroad' ? '≈ ' : '') + pct1(v)); });
+            if (r.mean != null) tip.append('div').attr('class', 't').text(`Region average: ${pct1(r.mean)}`);
+            tip.style('display', null); place(tip, box.node(), ev);
+          }).on('pointerleave', () => tip.style('display', 'none'));
+      });
+    });
+  }
+
+  function drawHist(rows) {
+    const box = d3.select('#histbox'); box.selectAll('*').remove();
+    const W = Math.max(280, box.node().clientWidth);
+    const rh = 40, top = 26, H = top + rows.length * rh + 6;
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').attr('class', 'lab').text('over 30');
+    const cw = probe.node().getComputedTextLength() + 20; probe.remove();
+    const mid = W / 2, half = (W - cw) / 2 - 24;
+    const m = Math.max(...rows.map((r) => Math.max(r.lula, r.flavio)), 1);
+    const s = d3.scaleLinear([0, m], [0, half]);
+    svg.append('text').attr('class', 'lab').attr('x', mid - cw / 2 - 4).attr('y', 12).attr('text-anchor', 'end').style('fill', 'var(--lula)').text('Lula won');
+    svg.append('text').attr('class', 'lab').attr('x', mid + cw / 2 + 4).attr('y', 12).style('fill', 'var(--flavio)').text('Flávio won');
+    rows.forEach((r, i) => {
+      const y = top + i * rh;
+      svg.append('text').attr('class', 'lab').attr('x', mid).attr('y', y + rh / 2 - 2).attr('dy', '.35em').attr('text-anchor', 'middle').text(r.band);
+      svg.append('rect').attr('x', mid - cw / 2 - s(r.lula)).attr('y', y + 6).attr('width', s(r.lula)).attr('height', rh - 16).attr('rx', 4).attr('fill', 'var(--lula)');
+      svg.append('rect').attr('x', mid + cw / 2).attr('y', y + 6).attr('width', s(r.flavio)).attr('height', rh - 16).attr('rx', 4).attr('fill', 'var(--flavio)');
+      svg.append('text').attr('x', mid - cw / 2 - s(r.lula) - 6).attr('y', y + rh / 2 - 2).attr('dy', '.35em').attr('text-anchor', 'end').text(r.lula);
+      svg.append('text').attr('x', mid + cw / 2 + s(r.flavio) + 6).attr('y', y + rh / 2 - 2).attr('dy', '.35em').text(r.flavio);
+    });
+  }
+
+  function drawSim(res, nac) {
+    const s = +document.getElementById('swing').value;
+    const urL = +nac.find((r) => r.candidate === L).valid_pct;
+    const sim = res.map((r) => ({ ...r, l: +r.lula_pct - s }));
+    const lulaUF = sim.filter((r) => r.l > 50).length, flavUF = sim.length - lulaUF;
+    const nl = urL - s, venc = nl > 50 ? L : F;
+    const out = d3.select('#simout'); out.selectAll('*').remove();
+    [['Swing', s === 0 ? 'none' : `${pp(Math.abs(s))} pp ${s > 0 ? '→ Flávio' : '→ Lula'}`, null],
+     ['Lula nationwide', pct(nl), 'var(--lula)'], ['Flávio nationwide', pct(100 - nl), 'var(--flavio)'],
+     ['States Lula × Flávio', `${lulaUF} × ${flavUF}`, null], ['Would win', venc, col(venc)]].forEach(([k, v, c]) => {
+      const d = out.append('div'); d.append('span').text(k); d.append('b').text(v).style('color', c);
+    });
+    const fl = d3.select('#simflip'); fl.selectAll('*').remove();
+    const mud = sim.filter((r) => (r.l > 50 ? L : F) !== r.winner);
+    if (!mud.length) { fl.append('span').attr('class', 'note').text('No state changes sides with this swing.'); return; }
+    fl.append('span').attr('class', 'note').text(`${mud.length} state${mud.length > 1 ? 's' : ''} would flip:`);
+    mud.sort((a, b) => +a.margin_pp - +b.margin_pp).forEach((r) => {
+      const c = fl.append('span').attr('class', 'chip flip').style('border-color', col(r.l > 50 ? L : F));
+      if (FL.uf[r.uf]) c.append('img').attr('class', 'flag').attr('src', FL.uf[r.uf]).attr('alt', '');
+      c.append('span').text(`${r.state} → ${r.l > 50 ? 'Lula' : 'Flávio'}`);
+    });
+  }
+  document.getElementById('swing').addEventListener('input', () => { const r = dash.data('state_results'), n = dash.data('national'); if (r.status === 'ok' && n.status === 'ok') drawSim(r.data, n.data); });
+
+  function drawVies(rows) {
+    const box = d3.select('#viesbox'); box.selectAll('*').remove();
+    const W = Math.max(280, box.node().clientWidth);
+    const data = rows.map((r) => ({ ...r, house_effect: +r.house_effect, mean_error: +r.mean_error })).sort((a, b) => a.house_effect - b.house_effect);
+    const rh = 46, top = 24, H = top + data.length * rh + 22;
+    const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').attr('class', 'lab');
+    const lm = Math.max(...data.map((r) => { probe.text(r.pollster); return probe.node().getComputedTextLength(); })) + 14; probe.remove();
+    const m = Math.max(1, ...data.map((r) => Math.abs(r.house_effect))) * 1.4;
+    const x = d3.scaleLinear([-m, m], [lm + 30, W - 30]);
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', top - 6).attr('y2', H - 20).attr('stroke', 'var(--t-axis)');
+    svg.append('text').attr('x', x(0) - 6).attr('y', 12).attr('text-anchor', 'end').text('← below average');
+    svg.append('text').attr('x', x(0) + 6).attr('y', 12).text('above average →');
+    data.forEach((r, i) => {
+      const y = top + i * rh;
+      svg.append('text').attr('class', 'lab').attr('x', 0).attr('y', y + 14).attr('dy', '.35em').text(r.pollster);
+      svg.append('text').attr('x', 0).attr('y', y + 32).attr('dy', '.35em').text(`${r.rounds} rounds · mean error ${sgn(r.mean_error)} pp`);
+      const x0 = x(Math.min(0, r.house_effect)), w = Math.abs(x(r.house_effect) - x(0));
+      svg.append('rect').attr('x', x0).attr('y', y + 6).attr('width', Math.max(w, 1)).attr('height', 16).attr('rx', 4).attr('fill', r.house_effect >= 0 ? 'var(--lula)' : 'var(--flavio)').attr('fill-opacity', .8);
+      svg.append('text').attr('x', r.house_effect >= 0 ? x(r.house_effect) + 6 : x(r.house_effect) - 6).attr('y', y + 14).attr('dy', '.35em').attr('text-anchor', r.house_effect >= 0 ? 'start' : 'end').text(sgn(r.house_effect));
+    });
+    svg.append('text').attr('x', (lm + W) / 2).attr('y', H - 4).attr('text-anchor', 'middle').text('Lula points relative to the overall trend');
+  }
+
+  function fail(id) { const b = d3.select(id); b.selectAll('*').remove(); b.append('div').attr('class', 'fail').text('Failed to load'); }
+
+  function draw() {
+    const nac = dash.data('national'), res = dash.data('state_results'), geo = dash.data('state_shapes');
+    const ev = dash.data('states_won'), dif = dash.data('vote_margin');
+
+    if (nac.status === 'ok') {
+      const get = (el) => nac.data.find((r) => r.candidate === el.dataset.where.split('=')[1]);
+      fill('[data-source="national"][data-field="valid_pct"]', (el) => pct(+get(el).valid_pct));
+      bigPct(nac.data, 'national');
+      root.querySelectorAll('.fillbar').forEach((el) => { el.style.width = (+get(el).valid_pct) + '%'; });
+      fill('[data-source="national"][data-field="votes"]', (el) => int(+get(el).votes));
+      fill('[data-source="national"][data-field="candidate"]', (el) => get(el).candidate);
+    }
+    if (ev.status === 'ok') fill('[data-source="states_won"]', (el) => String(ev.data.find((r) => r.candidate === el.dataset.where.split('=')[1]).states));
+    if (dif.status === 'ok') fill('[data-source="vote_margin"]', () => int(dif.data[0].votes));
+
+    if (res.status === 'ok' && geo.status === 'ok') drawMap(res.data, geo.data);
+    else if (res.status === 'error' || geo.status === 'error') fail('#mapbox');
+    else d3.select('#mapbox').selectAll('*').remove();
+    drawLegend();
+
+    if (res.status === 'ok') drawBars(res.data);
+    else if (res.status === 'error') fail('#barbox');
+    else d3.select('#barbox').selectAll('*').remove();
+
+    const pq = dash.data('polls'), td = dash.data('poll_trend'), em = dash.data('model_error'), ei = dash.data('pollster_error');
+    if (em.status === 'ok') {
+      const r = em.data[0];
+      fill('[data-source="model_error"][data-field="projection"]', () => pct1(r.projection));
+      fill('[data-source="model_error"][data-field="result"]', () => pct(r.result));
+      fill('[data-source="model_error"][data-field="error_pp"]', () => pp(r.error_pp));
+    }
+    if (td.status === 'ok' && pq.status === 'ok' && nac.status === 'ok') drawProj(td.data, pq.data, nac.data);
+    else if (pq.status === 'error' || td.status === 'error') fail('#projbox');
+    else d3.select('#projbox').selectAll('*').remove();
+    if (td.status === 'ok') drawChance(td.data);
+    else if (td.status === 'error') fail('#chancebox');
+    else d3.select('#chancebox').selectAll('*').remove();
+    if (ei.status === 'ok') drawInst(ei.data); else d3.select('#tabinst tbody').selectAll('*').remove();
+
+    const ext = dash.data('abroad_total'), cid = dash.data('abroad_cities');
+    const sx = d3.select('#split-ext'); sx.selectAll('*').remove();
+    if (ext.status === 'ok') {
+      const get = (el) => ext.data.find((r) => r.candidate === el.dataset.where.split('=')[1]);
+      fill('[data-source="abroad_total"][data-field="valid_pct"]', (el) => pct(+get(el).valid_pct));
+      bigPct(ext.data, 'abroad_total');
+      const sh = d3.select('#split-ext-h'); sh.selectAll('*').remove();
+      ext.data.forEach((r) => sh.append('div').style('width', (+r.valid_pct) + '%').style('background', col(r.candidate)));
+      fill('[data-source="abroad_total"][data-field="votes"]', (el) => int(+get(el).votes));
+      ext.data.forEach((r) => sx.append('div').style('width', (+r.valid_pct) + '%').style('background', col(r.candidate)));
+    }
+    if (cid.status === 'ok') drawCities(cid.data);
+    else if (cid.status === 'error') fail('#extbox');
+    else d3.select('#extbox').selectAll('*').remove();
+
+    const rs = dash.data('region_stats'), eta = dash.data('region_eta'), mh = dash.data('margin_bands'), dsp = dash.data('close_races'), vir = dash.data('swing_to_tie');
+    if (eta.status === 'ok') fill('[data-source="region_eta"]', () => pct1(eta.data[0].eta2_pct));
+    if (dsp.status === 'ok') fill('[data-source="close_races"]', () => String(dsp.data[0].under5));
+    if (vir.status === 'ok') fill('[data-source="swing_to_tie"]', () => pp(vir.data[0].pp));
+    if (res.status === 'ok' && rs.status === 'ok' && cid.status === 'ok') drawStrip(res.data, cid.data, rs.data);
+    else if (res.status === 'error') fail('#stripbox'); else d3.select('#stripbox').selectAll('*').remove();
+    if (mh.status === 'ok') drawHist(mh.data); else if (mh.status === 'error') fail('#histbox'); else d3.select('#histbox').selectAll('*').remove();
+    if (res.status === 'ok' && nac.status === 'ok') drawSim(res.data, nac.data);
+    const vi = dash.data('house_effects'), bs = dash.data('brier');
+    if (vi.status === 'ok') drawVies(vi.data); else if (vi.status === 'error') fail('#viesbox'); else d3.select('#viesbox').selectAll('*').remove();
+    if (bs.status === 'ok') {
+      fill('[data-source="brier"][data-field="brier"]', () => dec3(bs.data[0].brier));
+      fill('[data-source="brier"][data-field="days"]', () => String(bs.data[0].days));
+      document.getElementById('brier-txt').textContent = bs.data[0].brier > 0.25
+        ? 'The curve did worse than always saying 50%: for most of the final stretch, the polls had Flávio as the favorite.'
+        : 'The curve did better than always saying 50%, but was still far from a confident call on the winner.';
+    }
+
+    drawTable();
+  }
+
+  dash.onData(draw);
+})();
+</script>

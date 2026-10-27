@@ -1,0 +1,272 @@
+[
+ {
+  "uf": "AC",
+  "state": "Acre",
+  "region": "North",
+  "lula_pct": 34.0,
+  "flavio_pct": 66.0,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 32.0,
+  "precision": "approximate"
+ },
+ {
+  "uf": "AL",
+  "state": "Alagoas",
+  "region": "Northeast",
+  "lula_pct": 60.77,
+  "flavio_pct": 39.23,
+  "winner": "Lula",
+  "margin_pp": 21.54,
+  "precision": "exact"
+ },
+ {
+  "uf": "AP",
+  "state": "Amapá",
+  "region": "North",
+  "lula_pct": 52.88,
+  "flavio_pct": 47.12,
+  "winner": "Lula",
+  "margin_pp": 5.76,
+  "precision": "exact"
+ },
+ {
+  "uf": "AM",
+  "state": "Amazonas",
+  "region": "North",
+  "lula_pct": 54.02,
+  "flavio_pct": 45.98,
+  "winner": "Lula",
+  "margin_pp": 8.04,
+  "precision": "exact"
+ },
+ {
+  "uf": "BA",
+  "state": "Bahia",
+  "region": "Northeast",
+  "lula_pct": 71.31,
+  "flavio_pct": 28.69,
+  "winner": "Lula",
+  "margin_pp": 42.62,
+  "precision": "exact"
+ },
+ {
+  "uf": "CE",
+  "state": "Ceará",
+  "region": "Northeast",
+  "lula_pct": 68.93,
+  "flavio_pct": 31.07,
+  "winner": "Lula",
+  "margin_pp": 37.86,
+  "precision": "exact"
+ },
+ {
+  "uf": "DF",
+  "state": "Distrito Federal",
+  "region": "Center-West",
+  "lula_pct": 45.72,
+  "flavio_pct": 54.28,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 8.56,
+  "precision": "exact"
+ },
+ {
+  "uf": "ES",
+  "state": "Espírito Santo",
+  "region": "Southeast",
+  "lula_pct": 43.63,
+  "flavio_pct": 56.37,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 12.74,
+  "precision": "exact"
+ },
+ {
+  "uf": "GO",
+  "state": "Goiás",
+  "region": "Center-West",
+  "lula_pct": 40.34,
+  "flavio_pct": 59.66,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 19.32,
+  "precision": "exact"
+ },
+ {
+  "uf": "MA",
+  "state": "Maranhão",
+  "region": "Northeast",
+  "lula_pct": 69.54,
+  "flavio_pct": 30.46,
+  "winner": "Lula",
+  "margin_pp": 39.08,
+  "precision": "exact"
+ },
+ {
+  "uf": "MT",
+  "state": "Mato Grosso",
+  "region": "Center-West",
+  "lula_pct": 33.94,
+  "flavio_pct": 66.06,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 32.12,
+  "precision": "exact"
+ },
+ {
+  "uf": "MS",
+  "state": "Mato Grosso do Sul",
+  "region": "Center-West",
+  "lula_pct": 41.0,
+  "flavio_pct": 59.0,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 18.0,
+  "precision": "approximate"
+ },
+ {
+  "uf": "MG",
+  "state": "Minas Gerais",
+  "region": "Southeast",
+  "lula_pct": 50.43,
+  "flavio_pct": 49.57,
+  "winner": "Lula",
+  "margin_pp": 0.86,
+  "precision": "exact"
+ },
+ {
+  "uf": "PA",
+  "state": "Pará",
+  "region": "North",
+  "lula_pct": 55.02,
+  "flavio_pct": 44.98,
+  "winner": "Lula",
+  "margin_pp": 10.04,
+  "precision": "exact"
+ },
+ {
+  "uf": "PB",
+  "state": "Paraíba",
+  "region": "Northeast",
+  "lula_pct": 67.46,
+  "flavio_pct": 32.54,
+  "winner": "Lula",
+  "margin_pp": 34.92,
+  "precision": "exact"
+ },
+ {
+  "uf": "PR",
+  "state": "Paraná",
+  "region": "South",
+  "lula_pct": 37.42,
+  "flavio_pct": 62.58,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 25.16,
+  "precision": "exact"
+ },
+ {
+  "uf": "PE",
+  "state": "Pernambuco",
+  "region": "Northeast",
+  "lula_pct": 69.2,
+  "flavio_pct": 30.8,
+  "winner": "Lula",
+  "margin_pp": 38.4,
+  "precision": "exact"
+ },
+ {
+  "uf": "PI",
+  "state": "Piauí",
+  "region": "Northeast",
+  "lula_pct": 75.88,
+  "flavio_pct": 24.12,
+  "winner": "Lula",
+  "margin_pp": 51.76,
+  "precision": "exact"
+ },
+ {
+  "uf": "RJ",
+  "state": "Rio de Janeiro",
+  "region": "Southeast",
+  "lula_pct": 46.9,
+  "flavio_pct": 53.1,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 6.2,
+  "precision": "exact"
+ },
+ {
+  "uf": "RN",
+  "state": "Rio Grande do Norte",
+  "region": "Northeast",
+  "lula_pct": 65.72,
+  "flavio_pct": 34.28,
+  "winner": "Lula",
+  "margin_pp": 31.44,
+  "precision": "exact"
+ },
+ {
+  "uf": "RS",
+  "state": "Rio Grande do Sul",
+  "region": "South",
+  "lula_pct": 42.16,
+  "flavio_pct": 57.84,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 15.68,
+  "precision": "exact"
+ },
+ {
+  "uf": "RO",
+  "state": "Rondônia",
+  "region": "North",
+  "lula_pct": 31.0,
+  "flavio_pct": 69.0,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 38.0,
+  "precision": "approximate"
+ },
+ {
+  "uf": "RR",
+  "state": "Roraima",
+  "region": "North",
+  "lula_pct": 27.54,
+  "flavio_pct": 72.46,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 44.92,
+  "precision": "exact"
+ },
+ {
+  "uf": "SC",
+  "state": "Santa Catarina",
+  "region": "South",
+  "lula_pct": 30.58,
+  "flavio_pct": 69.42,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 38.84,
+  "precision": "exact"
+ },
+ {
+  "uf": "SP",
+  "state": "São Paulo",
+  "region": "Southeast",
+  "lula_pct": 46.15,
+  "flavio_pct": 53.85,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 7.7,
+  "precision": "exact"
+ },
+ {
+  "uf": "SE",
+  "state": "Sergipe",
+  "region": "Northeast",
+  "lula_pct": 69.53,
+  "flavio_pct": 30.47,
+  "winner": "Lula",
+  "margin_pp": 39.06,
+  "precision": "exact"
+ },
+ {
+  "uf": "TO",
+  "state": "Tocantins",
+  "region": "North",
+  "lula_pct": 48.63,
+  "flavio_pct": 51.37,
+  "winner": "Flávio Bolsonaro",
+  "margin_pp": 2.74,
+  "precision": "exact"
+ }
+]

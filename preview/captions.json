@@ -1,0 +1,77 @@
+[
+ {
+  "id": "abertura",
+  "cap": "Dashboard of Brazil’s 2026 presidential runoff: results by state, voting abroad, polls vs. result and statistical analysis.",
+  "dur": 13.31
+ },
+ {
+  "id": "placar",
+  "cap": "Final count: Lula (PT) re-elected with 51.79% of valid votes, 64.3 million votes. Flávio Bolsonaro (PL) took 48.21%.",
+  "dur": 14
+ },
+ {
+  "id": "mapa",
+  "cap": "The map shows the winner in each state: red for Lula, blue for Flávio. The stronger the color, the wider the lead. Hover a state for its numbers and flag.",
+  "dur": 14
+ },
+ {
+  "id": "regioes",
+  "cap": "Region buttons highlight a group of states. Lula won all nine Northeast states; Flávio swept the South and the Center-West.",
+  "dur": 10.2
+ },
+ {
+  "id": "exterior",
+  "cap": "The strip below sums up Brazilians voting abroad: Lula 53.86% vs. Flávio 46.14%.",
+  "dur": 8.48
+ },
+ {
+  "id": "vantagem",
+  "cap": "The lead chart ranks states from Lula’s widest margin (Piauí) to Flávio’s (Roraima). Minas Gerais was the closest race.",
+  "dur": 10.77
+ },
+ {
+  "id": "tabela",
+  "cap": "The full table can be sorted by any column and filtered with the search box.",
+  "dur": 7.07
+ },
+ {
+  "id": "regiao",
+  "cap": "Analysis: each dot is a state, placed by Lula’s share. Region explains 79% of the variation in the vote across states (eta²).",
+  "dur": 11.15
+ },
+ {
+  "id": "hist",
+  "cap": "How close each state was: only 2 states, Minas Gerais and Tocantins, were decided by less than 5 points.",
+  "dur": 9.15
+ },
+ {
+  "id": "simulador",
+  "cap": "Uniform swing simulator: moving 1.79 points from Lula to Flávio in every state would have flipped the national result.",
+  "dur": 12.82
+ },
+ {
+  "id": "pesquisas",
+  "cap": "Polls vs. result: a sample-weighted regression projected Lula at 49.5%. He got 51.79%, 2.3 points more.",
+  "dur": 14
+ },
+ {
+  "id": "chance",
+  "cap": "The chance of winning, recalculated each day, had Flávio as the favorite in the final stretch.",
+  "dur": 8.27
+ },
+ {
+  "id": "vies",
+  "cap": "Every pollster underestimated Lula. A Brier score of 0.354 is worse than always saying 50% (0.25).",
+  "dur": 13.34
+ },
+ {
+  "id": "cidades",
+  "cap": "Abroad, Lula won Paris, London, Lisbon and New York; Flávio won Miami, Boston, Tokyo and Nagoya.",
+  "dur": 10.56
+ },
+ {
+  "id": "fim",
+  "cap": "",
+  "dur": 9
+ }
+]

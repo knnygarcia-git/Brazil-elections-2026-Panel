@@ -1,0 +1,6 @@
+node_modules/
+preview/raw/
+preview/marks.json
+__pycache__/
+*.pyc
+.DS_Store

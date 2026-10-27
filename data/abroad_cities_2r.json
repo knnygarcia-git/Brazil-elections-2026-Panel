@@ -1,0 +1,74 @@
+[
+ {
+  "city": "Paris",
+  "country": "France",
+  "continent": "Europe",
+  "winner": "Lula",
+  "winner_pct": 83,
+  "lula_pct": 83
+ },
+ {
+  "city": "London",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "winner": "Lula",
+  "winner_pct": 63,
+  "lula_pct": 63
+ },
+ {
+  "city": "Lisbon",
+  "country": "Portugal",
+  "continent": "Europe",
+  "winner": "Lula",
+  "winner_pct": 60,
+  "lula_pct": 60
+ },
+ {
+  "city": "Porto",
+  "country": "Portugal",
+  "continent": "Europe",
+  "winner": "Lula",
+  "winner_pct": 60,
+  "lula_pct": 60
+ },
+ {
+  "city": "New York",
+  "country": "United States",
+  "continent": "North America",
+  "winner": "Lula",
+  "winner_pct": 52,
+  "lula_pct": 52
+ },
+ {
+  "city": "Boston",
+  "country": "United States",
+  "continent": "North America",
+  "winner": "Flávio Bolsonaro",
+  "winner_pct": 72,
+  "lula_pct": 28
+ },
+ {
+  "city": "Tokyo",
+  "country": "Japan",
+  "continent": "Asia",
+  "winner": "Flávio Bolsonaro",
+  "winner_pct": 77,
+  "lula_pct": 23
+ },
+ {
+  "city": "Miami",
+  "country": "United States",
+  "continent": "North America",
+  "winner": "Flávio Bolsonaro",
+  "winner_pct": 77,
+  "lula_pct": 23
+ },
+ {
+  "city": "Nagoya",
+  "country": "Japan",
+  "continent": "Asia",
+  "winner": "Flávio Bolsonaro",
+  "winner_pct": 82,
+  "lula_pct": 18
+ }
+]
